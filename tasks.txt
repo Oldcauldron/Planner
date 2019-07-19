@@ -1,0 +1,35 @@
+zadacha 1
+start -  12:30, finish - 14:01
+                Timeout: 10 minuts
+
+
+zadacha 2
+start -  14:11, finish - 15:11
+                Timeout: 10 minuts
+
+
+zadacha 3
+start -  15:21, finish - 16:21
+                Timeout: 10 minuts
+
+
+zadacha 4
+start -  16:31, finish - 17:11
+                Timeout: 10 minuts
+
+
+zadacha 5
+start -  17:21, finish - 17:41
+                Timeout: 10 minuts
+
+
+zadacha 6
+start -  17:51, finish - 18:31
+                Timeout: 10 minuts
+
+
+zadacha 7
+start -  18:41, finish - 20:54
+                Timeout: 10 minuts
+
+
