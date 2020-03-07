@@ -9,18 +9,21 @@
 
 import csv
 from datetime import datetime, timedelta
+import os
+from time import sleep
+from logger_func import log_func
 
 
 def create_example_csv():
     a = [
         ['12:30', '10', '(start_time, time_out min)'],
-        ['zadacha 1', '1-31'],
-        ['zadacha 2', '1-00'],
-        ['zadacha 3', '1-00'],
-        ['zadacha 4', '0-40'],
-        ['zadacha 5', '0-20'],
-        ['zadacha 6', '0-40'],
-        ['zadacha 7', '2-13'],
+        ['task 1', '1-31'],
+        ['task 2', '1-00'],
+        ['task 3', '1-00'],
+        ['task 4', '0-40'],
+        ['task 5', '0-20'],
+        ['task 6', '0-40'],
+        ['task 7', '2-13'],
     ]
 
     with open('tasks.csv', 'w', newline='') as file:
@@ -52,25 +55,48 @@ def count_tasktime(obj):
 def read_csv_file():
     with open('tasks.csv', 'r') as file:
         read = csv.reader(file)
-        dict_tasks, time_out = count_tasktime(read)
-        return dict_tasks, time_out
+        try:
+            dict_tasks, time_out = count_tasktime(read)
+            return dict_tasks, time_out
+        except ValueError as Err:
+            logger.error(f'! read_csv_file - {name} - {Err}')
+        except NameError as Err:
+            logger.error(f'! read_csv_file - {name} - {Err}')
+        return None, None
 
 
-def write_txt_file(dict_tasks, time_out):
+def write_txt_file(dict_task, time_out):
     with open('tasks.txt', 'w') as f:
-        for a, b in dict_tasks.items():
-            start = f'{b[0].hour}:{str(b[0].minute).zfill(2)}'
-            finish = f'{b[1].hour}:{str(b[1].minute).zfill(2)}'
-            f.write(f'{a}\nstart -  {start}, finish - {finish}\n\
-                Timeout: {time_out} minuts\n\n\n')
+        try:
+            for a, b in dict_tasks.items():
+                start = f'{b[0].hour}:{str(b[0].minute).zfill(2)}'
+                finish = f'{b[1].hour}:{str(b[1].minute).zfill(2)}'
+                f.write(f'{a}\nstart -  {start}, finish - {finish}\n\
+                    Timeout: {time_out} minuts\n\n\n')
+        except AttributeError as Err:
+            logger.error(f'! write_txt_file - {name} - {Err}')
+            f.write(f'Error - {Err}.\nWrong filling tasks.csv')
+        except:
+            logger.error(f'! write_txt_file - unrecognize error.\nWrong filling tasks.csv')
+            f.write(f'! write_txt_file - unrecognize error ')
 
 
-try:
-    dict_tasks, time_out = read_csv_file()
-except FileNotFoundError:
-    create_example_csv()
-    dict_tasks, time_out = read_csv_file()
-write_txt_file(dict_tasks, time_out)
+
+
+if __name__ == '__main__':
+
+    name = 'planer.py'
+    logger = log_func(name)
+
+    try:
+        dict_tasks, time_out = read_csv_file()
+    except FileNotFoundError:
+        create_example_csv()
+        dict_tasks, time_out = read_csv_file()
+    finally:
+        write_txt_file(dict_tasks, time_out)
+
+
 
 
 '''
