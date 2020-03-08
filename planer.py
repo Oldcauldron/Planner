@@ -9,8 +9,6 @@
 
 import csv
 from datetime import datetime, timedelta
-import os
-from time import sleep
 from logger_func import log_func
 
 
@@ -58,9 +56,7 @@ def read_csv_file():
         try:
             dict_tasks, time_out = count_tasktime(read)
             return dict_tasks, time_out
-        except ValueError as Err:
-            logger.error(f'! read_csv_file - {name} - {Err}')
-        except NameError as Err:
+        except Exception as Err:
             logger.error(f'! read_csv_file - {name} - {Err}')
         return None, None
 
@@ -73,14 +69,9 @@ def write_txt_file(dict_task, time_out):
                 finish = f'{b[1].hour}:{str(b[1].minute).zfill(2)}'
                 f.write(f'{a}\nstart -  {start}, finish - {finish}\n\
                     Timeout: {time_out} minuts\n\n\n')
-        except AttributeError as Err:
+        except Exception as Err:
             logger.error(f'! write_txt_file - {name} - {Err}')
             f.write(f'Error - {Err}.\nWrong filling tasks.csv')
-        except:
-            logger.error(f'! write_txt_file - unrecognize error.\nWrong filling tasks.csv')
-            f.write(f'! write_txt_file - unrecognize error ')
-
-
 
 
 if __name__ == '__main__':
