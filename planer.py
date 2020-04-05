@@ -8,6 +8,7 @@
 '''
 
 import csv
+import subprocess
 from datetime import datetime, timedelta
 from logger_func import log_func
 
@@ -80,12 +81,21 @@ if __name__ == '__main__':
     logger = log_func(name)
 
     try:
-        dict_tasks, time_out = read_csv_file()
+        discr = subprocess.run(['notepad.exe', 'tasks.csv'], shell=True)
+        if discr.returncode == 0:
+            input('Нажми Enter если заполнил план')
+            dict_tasks, time_out = read_csv_file()
+        else:
+            raise FileNotFoundError
     except FileNotFoundError:
         create_example_csv()
+        discr = subprocess.run(['notepad.exe', 'tasks.csv'], shell=True)
+        input('Нажми Enter если заполнил план')
         dict_tasks, time_out = read_csv_file()
     finally:
         write_txt_file(dict_tasks, time_out)
+        subprocess.Popen(['start', 'tasks.txt'], shell=True)
+
 
 
 
